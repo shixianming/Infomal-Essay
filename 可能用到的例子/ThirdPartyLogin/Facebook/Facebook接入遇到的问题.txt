@@ -1,0 +1,111 @@
+邮箱：
+密码：
+手机：
+APP_ID：
+App_Secret：
+Client_Toke：
+Bundle_ID：
+发布密钥的散列值：
+开发密钥的散列值：
+数据删除回调网址：
+隐私政策网址：
+
+查询keystore的别名：
+在keystore的目录下输入以下命令：keytool -list -v -keystore YOURE_KEYSTORE -storepass 密码
+
+生成开发的密钥哈希散列值
+keytool -exportcert -alias androiddebugkey -keystore DEBUG_KEY_PATH | openssl sha1 -binary | openssl base64
+
+生成发布的密钥哈希散列值
+没有openssl去https://code.google.com/archive/p/openssl-for-windows/downloads下载对应平台的openssl
+在命令窗口输入以下命令：keytool -exportcert -alias YOUR_RELEASE_KEY_ALIAS -keystore YOUR_RELEASE_KEY_PATH | openssl sha1 -binary | openssl base64
+
+YOUR_RELEASE_KEY_ALIAS：密钥别名
+YOUR_RELEASE_KEY_PATH ：密钥路径
+openssl ：openssl路径，或着配置环境变量
+
+安卓AndroidManifest.xml配置：
+    <activity android:name="com.facebook.unity.FBUnityLoginActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+    <activity android:name="com.facebook.unity.FBUnityDialogsActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+    <activity android:name="com.facebook.unity.FBUnityGamingServicesFriendFinderActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+    <activity android:name="com.facebook.unity.FBUnityAppLinkActivity" android:exported="true" />
+    <activity android:name="com.facebook.unity.FBUnityDeepLinkingActivity" android:exported="true" />
+    <activity android:name="com.facebook.unity.FBUnityGameRequestActivity" />
+    <activity android:name="com.facebook.unity.FBUnityCreateGameGroupActivity" />
+    <activity android:name="com.facebook.unity.FBUnityJoinGameGroupActivity" />
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fbAPP_ID" />
+    <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="true" />
+    <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled" android:value="true" />
+    <provider android:name="com.facebook.FacebookContentProvider" android:authorities="com.facebook.app.FacebookContentProviderAPP_ID" android:exported="true" />
+
+Android
+1.应用未设置：应用仍处于开发模式，你没有访问权限。请切换为已注册的测试用户，或向应用管理员申请访问权限
+2.登录出错：将你登入到此应用时出错。请稍后再试
+解决：密钥的散列值需要对应
+如果应用处于开发模式那么打包时也需要使用Android环境默认的密钥（debug.keystore）一般存放在C:\Users\用户名\.android\debug.keystore，并把开发密钥的散列值配置到后台
+如果应用处于发布模式那么需要把打包时的密钥（发布一般使用自定义密钥）的散列值配置到Facebook的后台
+3.FacebookSettings配置文件中获取的开发密钥散列值是有延迟或者不准确的，最好自己用命令去获取正确的散列值
+
+iOS
+1.本地没有安装cocoapods首次打包会自动安装
+2.首次打包会卡在Converting managed assemblies to C++，是后台在配置cocoapods环境
+3.导出到XCode报错：iOS framework addition failed due to a Cocoapods installation failure. This will will
+解决：自动安装cocoapods是FacebookSDK的功能，会有配置问题，我们需要自己去配置cocoapods环境
+打开终端执行以下命令，让系统知道我们的XCode在哪，下面的路径是XCode的默认安装路径可根据实际情况自己调整
+	sudo Xcode-select -switch /Applications/Xcode.app/Contents/Developer
+3.导出到Xcode以后到Build报错：FBSDKShareKit/FBSDKShareKit.h file not found
+是因为Facebook的依赖库需要用第三方依赖管理器；这里使用的是cocoapods
+按照下面这篇文章配置好cocoapods的环境
+http://shobhitsamaria.com/cocoapods-installation-failure-while-building-unity-project-for-ios/
+
+Facebook集成的SDK中有cocoapods相关的工具（也有External Dependency Manager），可选择打包到workspace(一般使用cocoapods都是这个)，这里还是选择打包到xcodeproj
+
+以下内容SDK自带的工具自动执行，也可以手动配置
+在项目的根目录下建立文件：Podfile文件（依赖库的配置文件）
+
+内容如下示例
+----------------------------
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+
+target 'UnityFramework' do
+  pod 'FBSDKCoreKit', '~> 9.3'
+  pod 'FBSDKGamingServicesKit', '~> 9.3'
+  pod 'FBSDKLoginKit', '~> 9.3'
+  pod 'FBSDKShareKit', '~> 9.3'
+end
+target 'Unity-iPhone' do//这里应该是添加到到哪个项目文件夹
+end
+use_frameworks!
+----------------------------
+在该文件所在目录运行终端，执行pod install命令安装依赖库
+
+4.加入FacebookSDK后打包可能会导致其它依赖库丢失，可根据报错信息去修复
+如Bugly的libBuglyBridge.a文件没有被打包到Libraries修改起平台配置为iOS即可
+
+网页登录（自定义登录流程的方式）
+Miniblink内置浏览器不能翻墙，内置浏览器初始化时使用wkeInitializeEx(wkeSettings * settings) 或者打开以后用wkeConfigure(wkeSettings* settings)这个API去配置代理设置
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

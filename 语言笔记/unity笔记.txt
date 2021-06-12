@@ -1,0 +1,881 @@
+1.脚本
+1）unity创建的.CS文件的实例就是挂载关系，每当在组件上挂载一次脚本，就相当于创建了一个实例
+2）unity脚本名类的名字强制要求和.CS文件名一样
+3）unity声明周期函数：在游戏开始的时候仅仅执行一次
+4）unity创建的.CS文件其类继承MonoBehaviour：将当前脚本变为一个组件化的脚本文件
+
+2.Game_Object
+1）所有层级列表下的游戏对象都是它的实例
+2）获取层级列表下游戏组件对象引用的两种方法--a.公开拖引用 MonoBehaviour派生类内定义的公开字段就会在unity界面显示
+										 b.GameObject.Find(" "):传入层级列表的游戏组件对象，可以私有化游戏组件
+										 对象的引用，不再unity界面显示
+                                                 
+3）FixeUpdate：固定时间间隔执行一次，时间间隔可在编辑器内设置，用于物理逻辑
+4）Update：每帧执行一次，但是帧之间的间隔不固定
+5）OnEnable：当前游戏对象被唤醒时执行
+6）OnDrawGizmos：不用等项目运行就能执行的一个函数，这个生命周期函数是一个自我循环的声明周期函数
+7）OnMouseDown：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标点击该游戏对象时就会触发该声明周期函数
+8）OnMouseUp：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标弹起的时候触发该声明周期函数
+9）OnMouseEnter：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标移入该游戏对象时触发该生命周期函数
+10）OnMouseExit：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标移出该游戏对象时触发该生命周期函数
+11）OnMouseDrag：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标拖拽该游戏对象时触发该生命周期函数
+12）OnMouseUpAsButton：挂有这个脚本的游戏对象，可以当做一个点击按钮来使用
+13）OnMosueOver：挂有这个脚本的游戏对象，如果身上有碰撞检测，那么鼠标拖拽该游戏对象结束时触发该生命周期函数
+14）OnAnimatorIk(Int layerIndex)：控制IK的生命周期函数，这个生命周期函数是一个循环的生命周期函数
+15）OnGUI：画UI的生命周期函数，也是一个能自我循环的函数，可以作UI插件，消耗性能大不适合作UI使用 
+16）OnDestroy：当前脚本被销毁时会被调用，包括挂载脚本的游戏对象被销毁、脚本被销毁、游戏结束
+
+4.层级列表
+1）创建空的父类组件整合游戏组件时，一定要将空的父类组件格式化一次
+2）层级列表寻找对象时，是从上至下寻找， 因此没创建一个游戏组件时需要自己命名，并且命名见名知意
+3）添加标签：便于对游戏组件进行分类操作--选择物体->Tag->Add Tag->+->自定义标签->将同类的组件添加该标签进行分类
+
+5.碰撞检测系统
+1）碰撞的双方必须都有碰撞器Collider
+2）碰撞的其中一方必须有刚体功能组件
+3）几种碰撞器--a.Mesh Collider：用于不规则物体，很消耗性能
+4）一个物体只能有一个碰撞器
+5）三种碰撞情况对应的生命周期函数--a.private void OnCollisionEnter(Collision collision)：进入碰撞的瞬间开始检测，一次调用
+								b.private void OnCollisionStay(Collision collision)：正在发生碰撞时检测，频繁调用
+								c.private void OnCollisionExit(Collision collision)：离开的瞬间开始检测，一次调用
+注意：如果启用is Trigger，则此Collider被用于触发事件，自动忽略物理引擎
+
+6.触发检测系统
+1）操作对象启用触发事件
+2）三种触发情况对应的声明周期函数--a.private void OnTriggerEnter(Collider other)：进入触发的瞬间开始检测，一次调用
+							  --b.private void OnTriggerStay(Collider other)：正在发生触碰是检测，频繁调用
+							  --c.private void OnTriggerExit(Collider other)：离开的瞬间开始检测，一次调用
+3）使用触发检测系统时需要把被触碰的组件改为触发器
++：人物控制器CharacterController的Move或SimpleMove进行移动时调用--OnControllerColliderHit(ControllerColliderHit hit);
+Move函数在移动时物体不会下坠，SimpleMove移动时会边移动边坠落到地面
+
+7.刚体
+1）isKinematic = true;--不受物理引擎影响
+2）AddForce(new Vector3( , , ));--给游戏对象添加一个力使其移动
+
+8.导航路径
+1）设置静态物体->设置可行走和不可行走（windows->AI->Navigation->Object->选中物体设置可走和不可走）->生成导航路径（windows->AI->Navigation->Bake->Bake）
+
+8*.UI
+1）介绍：早起UI有自己的UI（GUI），通过生命周期函数调用
+2）比较牛的一些插件：UGUI（被unity收购），NGUI
+3）UI虽然在scene中显示，但是和游戏对象不在一个维度
+4）任何一个UI对象都是画布Canvas的子类，在使用任何一个UI对象时一定要锚点对齐，每一个UI对象锚点对齐的是父类
+
+9.导入外部资源
+1）各大资源网站--a.爱给网；b.蛮牛网；c.纳金网
+
+10.打包   
+1）测试阶段打包：也就是只打包Assets文件，右键选中Export package打包
+2）游戏项目打包：File->BulidSetting->将需要打包的场景拖入->点击player setting->修改公司名字和游戏名字，并在Mac App Store Options中的Bundle Identifier
+修改对应的公司名字和游戏名字，点击Build
+3）利用配置文件保存数据--a.excel->开发工具->创建Text文档->修改后缀为xml：xml是一个文本文件，一般是用来做网络之间的通讯（解析起来非常方便）
+导入excel文件：1.写好xml模板（两条--找规律）2.选中开发工具中的“源” 3.右边选择xml映射 4.跳出的对话框中选择添加 5.选择模板xml 6.确定 7.拖入模板的源映射到excel的左上角
+8.再点开发工具，选择导出 9.注意xml的格式如果是含有中文的格式应为UTF—8
+					--b.json：java Script object notice
+4）c#创建xml文件，包含创建，增，删，改，查（c#--XML）
+包含：报头 报文
+
+11.摄像机
+1）多重摄像机显示层问题：例如当有两个摄像机时，层次为0的摄像机摄入画面“12”，但是遮挡住画面“2”，层次为1的摄像机也摄入画面“12”，但是遮挡住画面“1”
+由于显示层的级别问题当两个摄像机同时调用时，两个显示界面会重叠，层次为0的摄像机显示画面“1”，层次为1的摄像机显示画面“2”，重叠以后还原原本画面“12”
+2）制作小地图问题
+3）正交摄像机（orthographic）size的值代表的是2D摄像机的高所占单元格的一半
+4）2D摄像机中每一个单元格默认渲染100个像素
+5）Camera组件上的Clear Flags：每个相机在渲染时会存储颜色和深度信息。屏幕未绘制部分是空的，默认情况下会显示天空盒，当使用多个摄像机时，每一个都将自己的颜色和深度
+信息存储在缓冲区中，还将积累大量的每个相机渲染数据。当场景中的任何特定相机进行渲染时，你可以设定清除标记来清除缓冲区信息的不同集合
+			  --a.Skybox：天空盒  这是系统默认设置，在屏幕上空的部分将显示当前相机的天空盒，如果当前相机没有设置天空盒，它会默认使用渲染设置（Edit->Render Settings）
+中选择天空盒。然后将它退回使用背景颜色，另外天空盒组件可以添加到相机上
+			  --b.Solid Color：纯色  屏幕上任何空的部分都将显示当前选择的背景颜色 
+			  --c.Depth Only：仅深度  当需要绘制一个玩家的枪而不让它在环境内部得到裁剪，我们需要设置一个深度为0的摄像机来绘制环境，还需要另一个
+深度为1的相机单独绘制武器。该武器相机的清除标记应设为仅深度。这将保持环境的图形显示在屏幕上，但是会丢弃所有关于每个对象在三维空间中的位置信息。当枪
+被绘制出来，不透明的部分将完全覆盖任何已绘制的事物，而不管枪到墙之间的距离如何接近
+			  --d.Don't Clear：不清除  该模式下不清除任何颜色或深度缓存，其结果是每帧绘制在下一帧之上，造成涂片效果。显然这不是用于游戏的典型方式
+最好是与自定义着色器一起使用
+
+12.预组件
+1）获取预组件的两种方式--a.公开字段拖引用
+					 --b.资源动态加载：必须在Assets文件夹内存在一个Resources文件夹
+					 GameObject _GameObject = Resources.Load<GameObject>("预组件");存在子文件夹时，采用路径的形式获取子文件夹内的预组件
+2）代码创建游戏对象：GameObject.CreatePrimitive(PrimitiveType.Quad);--有限的几种游戏对象
+3）预组件实例化函数--a.Instantiate(游戏对象名);
+				 --b.Instantiate(A,B,C);--A：需要实例化的那个预组件名字  B：实例化的那个预组件的位置  C：实例化的那个预组件的旋转角度
+4）重复执行某个函数：InvokeRepeating("",float A,float B);--""重复执行的那个函数的名字  float A开始执行的时间  float B每次重复执行的时间间隔
+ 
+13.进程、线程、协程
+1）进程：正在执行的程序
+2）线程：一个线程可以包含多个协程，多线程本质是串行的，但是可以实现并行的效果
+3）协程：不是多线程也不是多进程，就是特殊的方法，在某个线程里运行；属于轻量级线程，非抢占式任务处理，由程序员切换控制（c++、c#、lua、pyrthon、go）
+协程使用于I/O阻塞，缺点是无法利用多核，无法适用于计算密集型场景
+4）协程的工作原理：协程函数的返回值是IEnumerator，他是一个迭代器，可以把他当成执行一个序列的某个节点的指针，他提供了两个重要的接口
+分别是Current（返回当前指向的元素）和MoveNext()将指针指向后移一个单位，如果移动成功返回true
+				  yield关键词用来声明序列中的下一个值或者是一个无意义的值，如果使用yield return X（X是一个具体的对象或者数值）的
+话，那么MoveNext返回为true并且Current被赋值为X，如果使用yield break使得MoveNext()返回为false，如果MoveNext函数的返回为true意味着
+协程的执行条件被满足，则能够从当前的位置继续向下执行，否则不能从当前位置继续往下执行
+5）同步：在发出一个功能调用时，在没有得到结果之前，该调用就不返回。按照这个定义，其实绝大多数函数都是同步调用的，但是一般而言，我们在说
+同步、异步的时候特指那些需要其他部件协作或者需要一定时间完成的任务。最常见的就是SendMessage。该函数发送一个消息给某个窗口，在对方处理完
+之前这个函数都不返回。当对方处理完以后，该函数才把消息处理函数所返回的LRESULT值返回给调用方
+6）异步：当一个异步过程调用者发出后，调用者不能立刻得到这个结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者
+以CAsycSocket类为例，当一个客户端通过调用Connect函数发出一个连接请求后，调用者线程立刻可以朝下运行。当连接真正建立起来以后，socket底层
+会发送一个消息通知该对象，这里提到执行部件和调用者通过三种途径返回结果（状态、通知、回调），具体使用哪一种依赖于执行部件的实现，除非执行
+部件提供多种选择，否则不受调用者控制。如果执行部件用状态来通知，那么调用者需要每隔一定时间检查一次，这样效率很低；如果使用通知的方法，效
+率则很高，因为执行部件几乎不需要做额外的操作，至于回调函数，其实和通知没太多区别
+注：CSocket从CAsyncSocket派生，但是其功能已经由异步转化为同步
+7）阻塞：阻塞调用是指调用结果返回之前，当前线程会被挂起，函数只有在得到结果之后才会返回；与同步调用不同的是，同步调用的当前线程还是激活的
+只是从逻辑上当前函数没有返回而已。Socket接收数据的recv函数是一个阻塞调用的例子，当socket工作在阻塞模式的时候，如果没有数据的情况下调用该
+函数，则当前线程就会被挂起，直到有数据为止
+8）非阻塞：在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。使用select函数可以使非阻塞对象进入阻塞调用
+9）对于普通函数的调用：调用程序发出对普通函数的调用后，程序执行立即转向被调用函数执行，直到该函数执行完毕，再返回调用程序继续执行
+10）对于回调函数调用：调用程序发出对回调函数的调用后，不用等函数执行完毕，立即返回并继续执行，这样调用执行程序和被调用函数同时在执行
+当被调用函数执行完毕以后，被调函数会反过来调用某个事先指定函数，以通知调用程序，该函数调用结束
+++：windows程序设计
+
+/*
+1.多进程之间不共享内存存储空间
+2.多线程可以共享空间
+3.线程：一个可执行的空间 进程里一定会有一个主线程
+5.协程：轻量级线程，非抢占式任务处理，由程序员切换控制；不是线程不是进程，就是一个特殊的函数（编译器、虚拟机角度）
+语言支持：c++  c# lua  python go  Java开元组件
+6.一个线程可以包含多个协程，多协程本质是串行的，但是可以实现并行的效果
+协程好处：适用于I/O阻塞
+协程缺点：无法利用多核 =》 无法适用于计算密集型场景
+*/
+
+14.插值
+1）线性插值：Vector3.Lerp(A,B,C);--A.被插目标的坐标点  B.目的地的坐标点  C.每次插的距离
+			Color.Lerp();--颜色插值
+			Quaternion.Lerp();
+2）球形插值：Vector3.Slerp(A,B,C);--A.被插目标的坐标点  B.目的地的坐标点  C.每次插的角度
++：Vector3.MoveToward(A,B,C);--A.被插目标的坐标点  B.目的地的坐标点  C.每次插的距离
+注：MoveToward与Lerp的区别--前者每次插值是一个固定值，也就是平均移动，最终与目标点完全重合；后者每次插值是当前全程距离的一个份数
+所以刚开始插的比较快，后面越来越慢，最终无限趋近于目标点
+
+15.几种光源
+1）方向光
+2）点光源
+3）聚光灯
+4）区域光：只对某一区域有效，并且该区域应为静态的，需要烘焙才能生效
+
+16.射线检测
+1）被射线检测到的那个游戏对象必须要有碰撞器，才会触发射线检测事件
+
+17.三维向量
+1.transform.position实际上得到的是position值的一个副本，对其的一个数据赋值那么只是对副本在赋值，这种操作是不允许的
+在unity中向量被大量使用，例如transform.position += Vector3.right*speed*Time.timedeltaTime,如果该代码在Update中
+那么相当于是每一帧都生成了一个新的向量对象，如果用引用类型来封装Vector3，那么每一帧都有Vector3对象的生成和释放。效率
+比较差，用结构体就能很好的解决这个问题
+2.向量的点乘，返回一个角度，用来判断两个向量之间的夹角
+
+18.动画
+1）Legacy：老版动画（Animation）
+2）Generic：通用的（Animator）
+3）Humanoid：人型（两腿行走的）
+4）Animator--a.float
+		  --b.int：int类型的触发可以搭配枚举进行使用
+		  --c.bool
+		  --d.trigger：触发效果，当要切换的动画只需播放一次时，使用trigger不需要给条件，切换的动画播放完成以后自动切回
+5）Animator动画帧事件：当需要在动画的某一帧做某一件事的时候，需要使用动画帧事件，例如发射子弹；帧事件的名字要和方法名完全一样，并且访问权限为public
+6）Avatar
+7）1D混合树，一个方向的动画混合，例如走和跑的动画混合，会有走到跑的一个加速状态，动画的切换更加润滑
+8）2D混合树，多个方向的动画混合：有很多种--a.Simple Directional 2D简单定向，当角色的动作表现为不同的方向（向前走、向后走、向左走、向右走）时
+可以使用这个混合类型，设置等待或者朝向前的原点动作，这个模式中尽量避免使用相同朝向的动作
+									 --b.Freeform Directional 2D自由定向，这个模式下我们可以混合朝向不同的动作，比如（向前走、向前跑）
+在这个自由定向模式下，动作的集合应该有一个位于原点的动作，比如等待
+									 --c.Freeform Cartesian 2D自由笛卡尔坐标，这个模式最好使用在你的各个动作之间没有明显的朝向区别的时候
+在使用自由笛卡尔坐标时，你可以在你的X轴和Y轴上分别使用不同的定义、比如“角速度”和“线速度”。应用于一下动作，例如（向前走动不转弯、向前跑动不转弯
+、向前走动转向右、向前跑动转向右等）
+注：在自由笛卡尔坐标这个模式下，也应该有一个位于原点的动画--比如待机动画下的（原地左转弯，原地右转弯等，这些位于原点的动画都应按照一定的规律排在
+待机动画下）
+													--比如走路动画下的（向前走左转小弯，中弯、大弯，向前走右转小弯、中弯、大弯，这些基于向前走）
+的其他动画也应该按照一定的规律排在走的动画下面
+													--比如跑动画下的（向前跑左转小弯、中弯、大弯，向前跑右转小弯、中弯、大弯，这些基于跑下的）
+动画的其他动画也应该按照一定的规律排在走的动画下面
+9）Avatar Mask（动画遮罩）：例如一个喊的动画是不移动的，跑步的动画是没有喊的，我们需要组合这两个动画的时候，达到一边奔跑一边喊的效果
+首先创建一个动画状态机，第一层动画给默认播放为喊的动画，创建第二层，给一个空的动画，连接到跑的动画，给一切换条件
+然后创建一个Avatar Mask点开Humanoid设置骨骼哪里能动哪里不能动，在这个例子中我们需要上半身不动，下半身移动
+然后再第二个层级中Weight的下面将我们创建好的Avatar Mask给它，然后第二层的权重给1覆盖掉第一层动画，达到我们想要的效果
+10）动画中角色的移动是否应用到场景中：有的动画里角色是移动的，比如跑步，飞翔，转弯等。如果我们不需要这些位置旋转值变化，可以在对应的Bake Into Pos
+打钩，当我们需要这些位置和旋转值得变化时，我们可以不打勾，那么在播放动画的时候角色可以按照动画的效果进行移动
+11）Avatar：将角色的骨骼转化为可识别的一般骨骼或者人性骨骼；首先Animation Type选择人型，然后Avatar配置（点击configure->点击Mapping下的Automap->
+然后点击Pose下的Enforce配置T型骨骼->点击Apply应用）
+
+19.UI
+1）UI：user Interface--用户接口
+2）Canvas功能组件的三种模式--a.
+		                 --b.添加一个摄像机，这时候可以将一个3D的游戏物体放入到UI界面上，只要将该游戏物体放在Canvas前面，就能在屏幕上
+看到这个3D游戏物体
+		                 --c.将游戏对象的屏幕坐标系变为三维游戏世界坐标系
+3）Text和TextMeshPro
+4）Image和sprite Rendener的区别：--a.Image处于Canvas坐标系；sprite Rendener处于世界坐标系
+						       --b.Image有锚点；sprite Rendener没有锚点
+						       --c.Image是UI；sprite Rendener是渲染图片的
+5）Image：Image的四种模式--a.simple简单模式
+						--b.sliced切割模式：这种模式下可以使用九宫格切割，切割后的图片的四个角落不会随着图片的拉伸而失帧，用于UI图片的底层
+						--c.Tiled平铺模式：这种模式下的图片会根据Image的大小自动复制一份铺到未铺满的地方，直到整个Image被这个图片铺满
+						--d.Filled：这种模式下可以做技能CD效果，它能让图片以顺时针或者逆时针旋转消失
+6）Row Image：可以用来做小地图；创建一个新的摄像机用来渲染小地图，创建一个Render Texture文件夹，在这个文件夹里面创建一个Render Texture
+将新摄像机的模式改为正交模式，将其Target Texture改为创建的Render Texture，再将这个Render Texture给Row Image，然后将摄像机与玩家绑定
+注意Row Image需要锚点对齐;
+7）Toggle：可以用来做单项选择、多个选项的单项选择、背包内的各个板块切换、人物头像的切换
+	      --a.单项选择：创建一个Toggle就可以了
+	      --b.多个选项的单项选择：创建多个Toggle，再其父物体上添加一个Toggle Group组件，将所有的Toggle的Group加上其父物体，这时候相当于将这几个Toggle放入到了
+一个选项组内，只能选择其中一个选项（其中父物体上Toggle Group的Allow是能否取消勾选的功能，不选中的情况下，强制必须选择其中一项）
+	      --c.背包和人物头像的切换：将Toggle的BackGround和Checkmark的图片都换成头像或者背包所需要的图片
+注：Toggle中BackGround是左边√和其背景图，Checkmark是√，Label是右边的文字描述;Toggle添加点击事件OnValueChange.AddListener
+8）Slider：可以用来做声音大小的调节、血条
+		  --a.总体分类
+9）Scroll View：页面滑动，主要是几个功能组件的应用--a.Scroll Rect：页面滑动的主要组件（Content：滑动页面的大小，不是显示部分，是整个将要滑动的页面
+ViewPort：显示部分的大小）				       
+											  --b.Mask：遮罩，应用在ViewPort上，遮住不需要显示的部分
+											  --c.Gird Layout Group：排列组件，应用在Content上，将其子物体按照一定的数据进行排列（与其有相同功
+能的还有Horizontal Layout Group和Vertical Layout Group，这两个组件只能在某一方向进行排列）
+											  --d.Content Size Fitter：应用于Content，能让图片大小随着子物体的增加而增加（水平和垂直）
+10）打包图集：--a.操作：Edit->Project Settings->Editor->Sprite Packer(model->Always Enable(Legacy Sprite Packer))然后将图片改为Sprite(2D and UI)
+并将同一类的图片的Packing Tag改为统一名字，然后Window->2D->Sprite Packer->pack
+			 --b.好处：CPU是用来处理游戏的逻辑运算的，而GPU是用来处理游戏中图像的。在GPU中，我们要绘制一个图片需要提交图片（纹理）到显存，然后再进行
+绘制（在这个过程中会产生一次DrawCall），也就是说我们绘制100张图片时有100次DrawCall，这是非常消耗性能的
+					  （1.减少性能消耗，提高处理效率  2.可以归类不同模块的图片  3.一次加载或者卸载完成多图片的的处理，提高了运行效率）
+注：打包以后的图集保存在与Asset文件夹同级的Library文件夹中AtlasCache文件下；而且这个文件删除了也没用当项目打包时它会自动生成，图集的大小还有图集的格式
+等等参数都是可以设置的
+		
+20.XML
+1）绝对路径和相对路径：--a.绝对路径是带盘符的路径，我们称之为绝对路径
+					 --b.相对路径是相对于某一个文件夹的路径，我们称之为相对路径
+2）在unity中如何读取到xml文件：--a.通过路径去寻找（相对于Unity文件夹的路径，和绝对路径）
+							 --b.公开拖引用（TextAsset类型）
+							 --c.通过Resources文件夹，像找预制件一样的方式去找xml(LoadXml)
+							 
+21.背包系统
+1）界面搭建：用Scroll View等功能组件
+2）功能实现：--a.xml文件加载：道具信息保存在xml文件中，游戏加载这些资源的时候应该在进入游戏场景之前先加载好，避免游戏卡顿，所以在进入背包场景前
+应该在前一个场景中，加载xml文件（xml文件的读取在Model中读取，在Loading场景加载）；还应用到DontDstroyOnLoad，使得加载的xml文件的游戏对象不会在
+跳转场景的时候被销毁
+		   --b.UI层控制：道具的添加，道具信息的显示和关闭、背包界面的关闭
+		   --c.背包和道具的MVC：两个V层和C层实现各自的功能（背包：添加道具、找到第一个空格子  道具：道具的使用、移动、移动等）；M层（加载Xml
+生成道具、添加道具：在背包C层注入委托，在M层调用、移除道具）M层方法的调用在UI层
+		   --d.道具类（由于每种道具都有自己特性，但是也有共性，所以封装一个道具类作为所有道具的父类、带有自己独有属性的道具继承道具类：包括继承
+深拷贝函数、克隆函数、以及重写属性显示方法）
+
+22.插件
+1）DOTween：补间动画（还有ITween Hottween--被DOTween收购）--时间上的精确控制、效率 
+2）DOTween：本身就告诉了最终的位置，中间的过程自动补齐，两个DOTween在一起就是并行运行而不是一个执行完了再执行另一个（DOTween不是一个阻塞式的代码）
+3）Sequence：动画序列--a.Append：添加一个Tween动画到当前序列的末尾
+					--b.Join：添加一个动画与序列最后一个动画进行合并（Join进行合并后的动画时长以时间最长的动画时间为准）
+					--c.Insert：在一个时间插入一个动画（当前插入的动画不会与其他动画时间上起冲突）
+
+23.网络
+1）IP地址：当前电脑在网络中的地址
+2）DNS：域名解析服务器
+3）端口号：软件在系统当中的识别号
+4）地址簇：
+5）协议：--a.TCP/IP协议：流式传输（安全）
+		--b.UDP协议：广播式传输（）
+
+24.DrawCall
+1）DrawCall影响游戏运行效率原因：为了CPU和GPU可以进行并行工作，就需要一个命令缓冲区，就是由CPU向其中添加命令，然后由GPU从中读取命令，这样就实现了
+通过CPU准备数据，通知GPU进行渲染；在每次调用DrawCall之前，CPU需要向GPU发送很多内容，主要是包括数据、渲染状态（设置对象需要的材质纹理）等
+			   CPU具体工作如下：准备渲染对象，然后将渲染对象从硬盘加载到内存，然后从内存加载到显存，进而方便GPU进行高速处理
+							   设置每个对象的渲染状态，也就是设置对象的材质、纹理、着色器等
+							   输出渲染图元，然后像GPU发送DrawCall命令，并将渲染图片元传递给GPU
+2）DrawCall是什么：在unity中每次CPU准备数据并通知GPU的过程就称之为一个DrawCall
+	     具体过程：设置颜色->绘图方式->顶点坐标->绘制->结束，所以在绘制过程中，如果能在一次DrawCall完成所有绘制就会大大提高游戏运行效率，进而达到
+游戏优化的目的
+注：并不是使用了图集就会只调用一次DrawCall，还需要使用同样的材质，在同一个Panel下（NGUI），同样的渲染状态
++：动态批处理和静态批处理--a.动态批处理优点：一切都是自动处理，物体是可以自由移动的
+					   --b.动态批处理限制：使用同一材质、顶点属性的最大限制900、使用lightmap的物体不进行批处理、使用MultiplePass的Shader也不会进行批处理、接受
+实时阴影的物体也不会进行批处理
+					   --c.静态批处理优点：自由度高、限制条件少、用内存来换性能
+					   --d.静态批处理限制：使用同一材质、将对应的对象设置为静态
+
+25.SpriteAtlas
+1）基本信息：Unity新的图集，可以在Assets下右键创建
+2）属性介绍：Type--a.Master(默认类型，也是常用类型) b.Varaint(图集变种，用于适配不同分辨率的情况，也就是准备了一套Master图集，然后通过设置比例来适配其它分辨率的图集)
+3）图集会覆盖图集内的图片设置，并且图集本身尺寸规范，可以进行合理的压缩
+4）不打在图集内的图片需要注意图片尺寸(a.ETC1：不支持透明通道且尺寸是2的幂次;b.ETC2：支持透明通道且尺寸是4的倍数)
+
+26.Mask和RectMask2D
+1）优点：Mask能配合Image形成各种形状的遮罩，由于Image的存在能接受射线检测，在一定条件下能合批；RectMask2D不参与渲染，不产生额外的DrawCall
+2）缺点：Mask会产生3个DrawCall；RectMask2D不能合批，不能接受射线检测，只能有矩形的遮罩
+
+++:API
+1.GameObject
+1）GameObject 实例.GetComponent<T>();--获取游戏对象上的功能组件
+2）GameObject.Find("游戏组件名");--获取层级列表下的游戏组件对象引用,GameObject是在整个场景寻找游戏对象，浪费资源，能使用transform尽量使用transform
+3）Destory(层级列表下的游戏对象的引用，也就是GameObject的实例);--销毁游戏对象，频繁的销毁会消耗大量的内存
+4）GameObject实例.SetActive(false);--反激活，关闭游戏组件显示，不消耗内存
+5）游戏对象.enabled = true|false;--开启或者关闭游戏对象的功能组件
+6）游戏对象.activeSelf();--获取游戏功能组件是否处于激活状态'
+7）GameObject.CreatePrimitive(PrimitiveType.Quad);--代码创建游戏对象，有限的几种游戏对象
+8）游戏对象.AddComponent<功能组件或者脚本>();--动态添加功能组价或者脚本
++：通过transform.Find();--获取游戏对象找子类时的三种方法；第二种Find("/")；第三种transform.GetChild();
+GameObject.Find("");遍历Hierarchy所有游戏对象，包括子类，比较浪费资源，当存在两个相同名字的游戏对象时，会找到第一个游戏对之后的不会获取
+transform.Find("");找寻当前脚本所挂载游戏对象的子类游戏对象，节约资源
+GameObject.FindGameObjectWithTag("");遍历场景中的所有物体，找到第一个Tag一致的游戏对象
+
+2.Input
+1）Input.GetKey(KeyCode.A);--获取键盘输入流，按下返回true，松开返回false
+2）Input.GetAxis("Horizontal");--获取unity封装好的Input引用，水平方向的输入流，返回一个浮点值，按下A或者左方向键（-1~0）
+按下D或者右方向键（0~1），当松开按键时快速的由峰值降回
+3）Input.GetAxis("Vertical");--获取unity封装好的Input引用，垂直方向的输入流，返回一个浮点值，按下W或者上方向键（0~1）
+按下S或者下方向键（-1~0），当松开按键时快速的由峰值降回
+4）Input.mousePosition;--返回鼠标在屏幕上的坐标（三维向量）
+5）Input.GetMouseButton();--0：鼠标左键响应  1：鼠标右键响应  2：鼠标中键响应
+
+3.Time
+1）Time.deltaTime;--两帧间隔时间
+2）Time.time;--游戏时间计时器
+3)Time.timeScale = 0|1|2;--赋值为0时游戏暂停（通过游戏时间暂停来停止游戏），赋值为1时游戏恢复，该值为影响Time.deltaTime的变化
+
+4.Transform
+//绕轴旋转
+1）transform.Rotate(new Vector3(0,0,0),Space.Self);--围绕自己坐标轴转；另外一种形式transform.Rotate(0,0,0,Space.Self);
+2）transform.Rotate(new Vector3(0,0,0),Space.World);--围绕世界坐标轴转；另外一种形式transform.Rotate(0,0,0,Space.Woorld);
+//绕点旋转
+3）transform.RotateAround();--给三个参数1.绕着哪个点转（某个游戏对象的position）2.往哪个方向转（Vocter3.up--围绕Y轴顺时针旋转
+Vector3.right--绕着X轴顺时针旋转 Vector3.forward--绕着Z轴顺时针旋转）3.每次转的角度
+4）欧拉角和四元素：--a.四元素由三个复数和一个实数这样的四个数组成，表示旋转的值，没有万向节死锁
+transform.rotation;
+				 --b.欧拉角表示旋转的值有数学上的问题，也就是万向节死锁问题，当两个方向的旋转角度一样时，它们会处于一种平衡状态
+这时候的旋转角度失效，对象失去平衡
+5）transform.eulerAngles;--欧拉角表示的世界旋转位置
+6）transform.localEulerAngles;--欧拉角表示的本地旋转位置
+注：欧拉角转四元素API--Quaternion.Euler(new Vector3(0,0,0));
+7）transform.TransformDirection();--将局部坐标与世界坐标关联起来，例如最开始人物的z轴与世界坐标的z轴是对应的，这时候人物向前移动就是正确的，当
+人物转向以后，人物z轴和世界坐标的x轴相对应时，这时候人物向前移动就是在向右移动是错误的，需要使用这个API将局部坐标与世界坐标关联起来
+8）transfrom.TransformPoint();--将相对于当前游戏对象的坐标转化为基于世界坐标系的坐标
+9）transform.InverseTransformPoint();--将世界坐标转化为相对当前游戏对象的基于世界坐标系的坐标
+
+5.App
+1）Application.Quit();--应用程序退出，安卓也是这个API
+2）Application.dataPath;--unity工程文件Asset文件的路径
+3）Application.persistentDataPath;--包含一个持久数据目录的路径（通常用于手机端）
+4）Application.internetReachability;--用户的当前网络状态
+5）Application.streamingAssetsPath;--流数据缓存目录的路径
+NetworkReachability(NotReachable--网络不可用 ReachableViaLocalAreaNetwork--用户使用WiFi ReachableViaCarrierDataNetwork--用户使用移动网络) 
+
+6.Button
+1）Button实例.onClick.AddListenter(()=>委托方法);--传入委托方法，可以是匿名方法或者传一个方法
+
+7.Mathf
+1）Mathf.Repeat(t,length);--循环t值，保障t的值永远在0~length之间，并返回一个正值
+2）Mathf.Sign();--传一个负数返回-1，传一个0或者正数返回1
+3）Mathf.Clamp(A,min,max);--位置限制，如果A小于min则返回min，如果A大于max则返回max，否则返回A
+4）Mathf.MoveTowards(A,B,C);--A：要移动的目标  B：要移动到的目标点  C：每次移动的距离
+
+8.UnityEngine
+1）UnityEngine.Random.Range();--untiy的随机函数，传入int或者float都可以
+
+9.AudioSource _Source
+1）_Source.play();--开始播放
+2）_Source.stop();--停止播放
+3）_Source.pause();--暂停
+4）_Source.volume();--音量大小
+5）_Source.clip();--切换音频
+注：怪物AI使用声音进行判断是否追击时，采用的思路（如果玩家与怪物为自定义导航模式，通过求出
+导航距离来进行声音判断）
+
+10.Vector3
+1）Vector3.Lerp(A,B,C);--A.被插目标的坐标点  B.目的地的坐标点  C.每次插的距离
+2）Vector3.Slerp(A,B,C);--A.被插目标的坐标点  B.目的地的坐标点  C.每次插的角度
+
+11.Physics
+1）Physics.Raycast(Ray ray,out RaycastHit hit);--是否发生射线检测
+2）RaycastHit.point;--物理检测的对象的点
+
+12.Ray
+1）Ray ray.origin--射线起点位置
+2）Ray ray.direction--射线方向
+
+13.LineRender
+1）LineRenderer lineRenderer.SetPosition(0,position);--画线的起点位置
+2）LineRenderer lineRenderer.SetPosition(1,position);--画线的终点位置
+
+14.Gizmos
+1）Gizmos.DrawCube(生成位置，生成大小);--画一个立方体
+2）Gizmos.DrawSphere(生成位置，半径);--画一个球体
+3）Gizmos.DrawWireCube(生成位置，生成大小);--画一个矩形线框
+4）Gizmos.DrawLine(生成位置，一个有长度的向量);--画一条线
+
+15.Animation
+1）Animation state = animation[""];--找到这个动画
+2）state.length;--这个动画的时长
+3）animation.CrossFade("");--切换动画，切换之间有过渡状态不会很突兀
+4）animation.Play("");--指定播放动画，动画的播放没有过渡状态
+
+16.Animator
+1）animator.SetFloat("切换条件的名字",一个浮点值);--动画状态机float值切换时的API
+2）animator.SetInt("切换条件的名字",一个整型值);
+3）animator.SetBool("切换条件的名字",一个布尔值);
+4）animator.SetTrigger("切换条件的名字");--当要切换的动画只需要播放一次的时候，使用这个类型，它可以在播放完动画以后自动切回，例如其他动画切换为攻击动画
+5）animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);--设置右手的IK动画的权重（当权重为0的时候，是不会产生IK动画）
+6）animator.SetIKPosition(AvatarIKGoal.RightHand,target.position);--设置IK的位置也就是背抓取物体的位置，用来逆推父物体的骨骼位置
+7）animator.GetCurrentAnimatorStateInfo(动画状态机的层级);--能得到这个层级动画的信息（哪个动画、动画名字、动画播放时长等）
+
+17.ContactPoint
+ContactPoint contact = collision.contacts[0];--碰撞检测，碰撞的地方；contact.Point可以得到碰撞点的坐标
+
+18.GUI
+GUI.Label(Rect position,string text);--代码实现的UI文本框，给定一个位置，给定文本框內容
+GUI.Button("ButtonName", ButtonArgument);--代码实现的UI按钮，给定标题和大小
+
+19.PlayerPrefs
+1）PlayerPrefs.GetFloat("数据名",数据);--读取一个数据时，没有存储该数据的值，给一个默认值
+2）PlayerPrefs.GetFloat("数据名");--读取一个数据，用其数据名来读取
+3）PlayerPrefs.SetFloat("数据名",数据);--存储一个数据，给一个数据名
+
+注：PlayerPrefs是unity专门用来进行游戏存档的功能，在PC端将数据存储到计算机的注册表中，在低版本的时候无法使用
+
+20.string
+1）string.IsNullOrEmpty("");--可以判断一个字符串是否是空和其内容是否为空
+2）string.Format();--拼接字符串
+3) string.Replace(oldValue, newValue);--替换字符串
+4）string.Substring(startIndex, length);--截取字符串，给定起始位置(包括)和长度，如只给定起始位置会将该位后面的都截取
+5) string.StartWith(value);--判断字符串开头是不是这一字符串
+6）string.EndWith(value);--判断字符串结尾是不是这一字符串
+7）string.IndexOf(value);--得到这段在该字符串中的位置
+8）string.ToLower();--转小写
+9）string.ToUpper();--转大写
+10）string.Splt(value);--根据value将字符串分割
+
+21.XML(C#--XML2)
+1）XmlDocument();--声明一个xml文档对象（底层实际上是用二进制在解析xml）
+2）xmlDoc.Load(@"C:\Users\Administrator.PC-20160426UIZJ\Desktop");--通过xml的路径将其加载到xml文档对象中
+3）XmlNode root = xmlDoc.SelectSingleNode("");--找到根节点
+4）xmlDoc.FirstChild;--找到第一个子节点，也可以用来找到根节点，但是不安全
+5）XmlNodeList list = root.ChildNodes;--XmlNodeList是一个容器，专门用来存储节点
+6）XmlElement element = list[i] as XmlElement;--在解析xml节点的时候，必须将XmlNode类型强制转换为XmlElement类型，因为解析xml的API是封装在XmlElement中
+7）XmlElement root = xmlDoc.CreatElement("root");--创建一个节点
+7）AppendChild(Node);--添加一个节点到什么地方，在xml或者节点上可以使用
+
+22.Directory
+1）Directory.CreatDirectory("");--创建一个文件夹，给一个路径
+2）Directory.Exits("");--判断一个文件夹是否存在，给一个路径
+3）Directory.GetFiles(path, parttern, searchOption);得到文件夹下所有符合条件的文件
+
+23.RectTransform and RectTransformUtility
+1）RectTransformUtility.ScreenPointToLocalPointInRectangle(A,B,C,D);--将屏幕上的点转化为Canvas上的点;A：给一个矩形框作为转化以后坐标的坐标系
+B：给一个屏幕点（Input.mousePosition） C：摄像机（第一个模式下，渲染Canvas的是内置摄像机，我们无法获得，这里直接给一个null就行） D：给一个二维向量
+用来返回出转化后的坐标点
+注：矩形框使用RectTransform
+2）RectTransformUtility.RectangleContainsScreenPoint(A,B);--判断鼠标所在点是否处于某一个矩形框内;A：给一个RectTransform B：Input.mousePosition
+3）RectTransform.rect.width;--获取UI的宽
+4）RectTransform.rect.height;--获取UI的高uiijujjj
+5）RectTransform.offsetMin = new Vector2(left,bottom);--设置UI距父物体边框的值
+6）RectTransform.offsetMax = new Vector2(right,top);--设置UI距父物体边框的值
+7）RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+8）RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
+9）RectTransform.anchoredPosition3D = new Vector3();--RectTransform的位置（PosX,PosY,PosZ）
+
+24.NavMeshAgent
+1）NavMeshPath path = new NavMesh();--生成一个导航路径的对象
+2）agent.CalculatePath(target.position,path);--将导航路径信息赋值给path
+3）path.corners;--在导航路径中的拐点
+4）navMeshAgent.remainingDistance;--距导航目的地的距离
+5）navMeshAgent.speed;--导航时的移动速度
+6）navMeshAgent.destination;--导航目的地设置
+
+25.Do Tween
+1）Tweener.SetRelative();--无论起点在哪，都是相对于起点运动一段距离
+2）Sequence sequence = DOTween.Sequence();--创建一个Sequence动画序列
+3）sequence.Append();--添加一个动画到动画序列中
+4）sequence.Join();--添加一个动画与动画序列最后一个动画进行合并（Join合并后的动画以时间最长的动画时间为准）
+5）sequence.Insert(A,B);--A：插入动画的时间点 B：插入的动画
++：Ease(InElastic--开始时先前后抖动再向目标点移动;OutElastic--到达目标点时会前后抖动;InOutElastic)
+
+26.Coroutine
+1）StartCoroutine(string methodName);--传入一个协程，开始协程；方法名以字符串的形式传入。此方法可以包含一个参数
+2）StopCoroutine(string methodName);--传入一个协程，终止协程
+3）StopAllCoroutine();--终止所有协程
++：协程方法必须有返回值（yield return + 表达式、值/yield break），使用yield break会导致协程的执行条件不被满足
+不会从当前的位置继续执行程序，而是直接从当前位置跳出函数体，回到函数的根部
+4）yield;--挂起，程序遇到此关键字时会被挂起，暂停执行，等待条件满足时从当前位置继续执行
+5）yield return 0/null;--程序在下一帧中从当前位置继续执行
+6）yield return 1,2;--程序等待1，2~帧之后从当前位置继续执行
+7）yield return new WaitForSeconds(n);--程序等待n秒后从当前位置继续执行
+8）yield return new WaitForEndOfFrame();--在所有的渲染以及GUI程序执行完成后从当前位置继续执行
+9）yield return new WaitForFixedUpdate();--所有脚本中的FixedUpdate函数都被执行后从当前位置继续执行
+10）yield return WWW;--等待一个网络请求完成后从当前位置继续执行
+11）yield return StartCoroutine();--等待一个协程执行完成后从当前位置继续执行
+
+27.Reflect
+1）typeof();--这是一个运算符，不是一个函数；传入一个类型，返回Type
+2）GetType();--获取任何对象的类型
+3）GetMethods();--返回该类型的所有公有方法
+4）GetProperties();--获取该类型的所有公开属性
+5）GetFields();--获取该类型的所有公开字段
+6）PropertyInfo.SetValue(该属性所属对象, 要赋的值, 针对索引器的下标(不是索引器传入空));--设置属性的值
+7）PropertyInfo.GetValue(该属性所属对象, 针对索引器的下标(不是索引器传入空));--获得属性的值
+8) GetCustomAttribute<>();--获取用户自定义特性，可以特定的属性或字段或方法打上自定义标签用来区别
+
+28.Stack
+1）Stack stack.Pop();--取到栈顶的元素，并从栈中删除
+2）Stack stack.Push(元素);--向栈中压入元素
+
+29.ForceMode
+1）ForceMode.Force;--给物体添加一个持续的力并使用其质量
+2）ForceMode.Acceleration;--给物体添加一个持续的加速度，但是忽略其质量
+3）ForceMode.Impulse;--给物体添加一个瞬间的力并使用其质量
+4）ForceMode.VelocityChange;--给物体添加一个瞬间的加速度，但是忽略其质量
+
+30.Encoding
+1）Encoding.GetEncoding("编码列表");--用来获取编码格式，在读取文件时使用，需要调用System.Text
+
+31.File And Path
+1）File.ReadAllLines(string path, Encoding encoding);--读取较小的文本文档，一次性将全部文本文档内容放入字符串数组中，每一行为数组里一个元素
+2）File.ReadAllText(string path);--读取文件，在unity中用该API读取资源文件时读取到的时meta文件
+3）Path.GetFullPath(string path);--获取绝对路径
+4）Path.GetExtension(string path);--获取后缀名
+
+32.Socket
+1）Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);--创建一个Socket对象
+AddressFamily--地址族
+SocketType--套接字类型(Stream：字节流套接字 Dgram：数据报套接字 Seqpacket：有序分组套接字 Raw：原始套接字)
+ProrocolType--协议类型
++：TCP用主机的IP地址加上主机上的端口号作为TCP连接的端点，这种端点就叫做套接字，每种套接字类型都有对应的协议
+Unknown--Unknown(指定未知的Socket类型) Stream--Tcp(字节流--支持可靠、双向、基于连接的字节流) Dgram--Udp(数据报--面向无连接)
+Raw--Icmp、Igmp(支持对基础传输协议的访问) Rdm(支持无连接、面向消息、以可靠方式发送的消息，并保留数据中的消息边界) Seqpacket(在网络上提供排序字节流的面向连接且可靠的双向传输)
+
+33.MemoryStream
+1）Read();--读取MemoryStream流对象，将值写入缓存区
+2）ReadByte();--从MemoryStream流中读取一个字节
+3）Write();--将值从缓存区写入MemoryStream流对象
+4）WriteByte();--从缓存区写入MemoryStream流对象一个字节
+5）Capacity;--取得或设定配置给这个资料流的位元组数目
+6）Position;--指定当前流的位置
+7）Length;--获取用字节表示的流长度
+8）SeekOrigin();--用来设定流的一个参数
+9）SeekOrigin.Begin;--从文件的最开始
+注：最好预分配内存以避免每次写入自动扩容导致的GC
+
+34.StringBuilder
+1）Capacity;--设置其对象的最大长度
+2）Append(string value);--像StringBuilder追加字符串，容量不足时扩容为当前容量的两倍
+3）Insert(int index, string value);--像指定位置插入字符串，插入函数会触发到StringBuilder内部的另外一个StringBuilder的容量检测，其容量默认为16，没办法改变。所以有插入操作的StringBuilder最好不预分配内存，否则会造成内存浪费
+4）Replace(string oldValue, string newValue);--替换字符串，和Insert一样有内存方面的弊端
+
+35.EditorWindow
+1）GetWindow(A,B,C,D)--A：窗口的类型，该类型一定要继承自EditorWindow  B：窗口是否浮动，如果是就不能内嵌到其它窗口中去，如果不是就能嵌入到其它窗口，默认是内嵌
+					   C：窗口的标题，如果为空就采用类的名称来当标题，默认为空  D：窗口是否焦点，默认是焦点
+
+36.SceneManager
+1）SceneManager.LoadScene(场景序号);--加载场景
+2）SceneManager.GetActiveScene();--获取当前场景，返回一个scene
+
+37.UnityWebRequest
+1）UnityWebRequestTexture.GetTexture(spriteUrl);//从图片的url上获取Texture
+2）DownloadHandlerTexture.GetContent(wr);//从一个UnityWebRequest对象获取Texture内容
+
+38.Application
+1）Application.dataPath;--unity工程Assets文件夹得绝对路径
+2）Application.persistentDataPath;--数据持久化路径
+
+39.AssetDatabase
+1）AssetDatabase.GetDependencies(string path);--得到一个资源得所有引用关系
+2）AssetDatabase.LoadAssetAtPath<T>(string assetPath);--根据路径加载资源
+3）AssetDatabase.Refresh();--刷新资源
+4）AssetDatabase.GUIDToAssetPath(string guid);--将资源得GUID转为相对Assets的路径
+5）AssetDatabase.GetAssetPath(Object obj);--得到一个对象的相对路径
+6) AssetDatabase.AssetPathToGUID(string path);--将路径转为GUID
+
+40.SpriteAtlasManager
+1）SpriteAtlasManager.atlasRequested;--加载图集时unity提供的接口，像action回调填充纹理集(需要注意加载时机，在纹理集没有被填充时Image等组件会显示默认的白色纹理，一旦填充就能获得正确的纹理)
+
+41.Regex
+1）Matches(string input);--获取输入文本符合正则匹配的集合
+2）Matches().Count;--每一次获取匹配文本的个数都会产生比较大的GC，建议缓存使用
+
+42.AssetBundle
+1）AssetBundle.LoadAsset(string name);--从资源包中加载指定的资源
+2）AssetBundle.LoadAllAsset();--加载当前资源包中所有的资源
+3）AssetBundle.LoadAssetAsync(string name);--从资源包中异步加载资源
+4）AssetBundle.Unload(bool unloadAllLoadedObjects);--卸载运行时内存中包含在bundle中的所有资源，(true: 所有从该bundle中加载的对象都会被销毁，如果存在引用则会造成引用丢失 false: bundle内的序列化数据将被
+释放，但是任何从这个bundle中实例化的物体都将完好)，无论哪种情况这个bundle都不能再加载更多的对象，除非重新加载
+5）AssetBundle.UnloadAllAssetBundles(bool unloadAllObjects);--卸载所有的AssetBundle，(true: 所有从AssetBundle中加载的对象都会被销毁，如果存在引用则会造成引用丢失 false: 仅释放所有bundle内的序列化数据)
+无论哪种情况都不能再加载更多的对象，除非重新加载
+
+43.Resources
+1）Load(string path);--加载指定路径的对象
+2）LoadAll(string path);--加载Resources文件夹下的所有对象
+3）unloadAsset(Object assetToUnload);--从内存中卸载对象
+4）unloadUnusedAssets();--卸载未被使用的对象
+
+44.Marshal
+1）Marshal.SizeOf<T>();--数据类型对应的内存大小
+2）Marshal.AllocaHGlobal(int cb);--分配一块内存，并返回内存地址
+3）Marshal.FreeHGlobal(IntPtr hglobal);--传入内存地址，释放这一块内存
+4）Marshal.Copy(byte[] source, int startIndex, IntPtr destination, int length);--将一段数据拷贝到目标内存
+5）Marshal.PtrToStructure<T>(IntPtr ptr);--将这快内存内的数据转换为指定的数据类型，并返回
+注：通过这个类能实现数据转换，申请一个目标数据类型大小的内存，并缓存其地址IntPtr, 数据转换为对应的数据类型，释放申请的内存，因为申请的内存为非托管的需要自己释放
+
++:DontDestroyOnLoad(gameObejct);--跳转场景的时候不会被销毁，但是不能再切换回当前场景
++:ContentSizeFitter.SetLayoutVertical();--立即刷新显示
++:LayoutRebuilder.ForceRebuildLayoutImmediate(recttransform);--强制刷新Layout显示
+++:域名
+1）UnityEngine.UI;--使用UI组件时需要调用的域名
+2）UnityEngine.SceneManagement;--场景操作时需要调用的域名
+3）UnityEngine.AI;--使用NavMeshAgent，导航路径时需要调用的域名
+4）System.Xml;--对xml进行操作时需要调用的域名
+5）Engine.EventSystems;--使用接口事件时需要调用的域名（鼠标的移入、移出、点击、拖拽等）
+6）System.IO;--文件读写操作时需要调用的域名
+7）UnityEngine.Playables;--控制Playable Director组件需要调用的域名
+8）UnityEngine.Timeline;--控制Timeline需要调用的域名
+9）System.Xml.Linq;--新的xml操作方法需要调用的域名（XDocument）
+10) System.Text;--对文件进行操作时需要调用的域名
+11）System.Diagnostics;--使用Conditional特性需要调用的域名
+11）UniRx;--处理时间上的异步逻辑(*****)
+
+++:类名
+1）Assembly：通过这个类可以加载操纵一个程序集，并获取程序集内部信息
+2）EventInfo：这个类保存给定的事件信息
+3）FieldInfo：保存给定的字段信息
+4）MethodInfo：保存给定的方法信息
+5）ParameterInfo：保存参数信息
+6）PropertyInfo：保存属性信息
+7）Module：这个类可以访问多个程序集中的给定模块
+8）Type：可以得到一个类的内部信息或者反射创建一个对象
+9）MemoryStream：用于向内存而不是磁盘读写数据，常作为其他流数据交换时的中间对象操作
+
+++:平台判断
+1）UNITY_ANDROID;--Android平台
+2）UNITY_IPHONE;--iphone平台
+3）UNITY_STANDALONE_WIN;--windows平台
+4）UNITY_XBOX360;--XBOX360平台
+5）UNITY_STANDALONE_OSX;--osx平台
+6）UNITY_EDITOR;--unity编辑模式
+例子：
+#if (UNITY_EDITOR || UNITY_STANDALONE)
+	Debug.Log("这里是编辑模式或者Mac、Windows、Linux");
+#else  
+	Debug.Log("");
+#endif
+注：我们也可以自己定义宏定义
+
+++:设计模式
+1.单例设计模式
+1）概念：整个程序中有且仅有一个实例，该类负责创建自己的对象，同时确保只有一个对象被创建
+2）该类的实例声明时为静态并且为空，私有无参构造函数，公有访问器；通过访问器来获取单例的引用，在访问器内只有单例不为空时才调用构造函数
+3）单例和静态类的区别：--a.如果一个类需要考虑安全性以及唯一性的时候，那么可以采用单例或者静态类
+					 --b.如果一个类中字段比较多的时候，那么用单例比较好
+					 --c.如果一个类中字段较少，但是函数特别多，那么用静态类比较好
+4）为什么要使用单例模式：就单例和静态方法来说，他们都能实现独一的目的，但他们一个是面向对象，一个是基于对象
+如果一个方法和他所在类的实例对象无关，那么他就应该是静态的，反之他就应该是非静态的。如果我们确实应该使用非静态的方法，但是在创建类的
+实例又确实只需要一份实例时，就需要用到单例模式了
+例如我们在游戏中的人物属性。这些属性是一定存在又是公共的，但是我们只能有一份属性，不然属性就会出现多个版本，所以只需要一份，这时候我们
+就需要单例来维护这些属性值，保证他们的唯一性
+
+2.观察者模式
+1）概念：将一个系统分割成一系列相互协作的类有一个很不好的副作用，那就是需要维护相关对象间的一致性。我们不希望为了维持一致性而使各类紧密耦合
+这样会给维护、扩展和重用都带来不便
+2）在哪些情况下使用观察者模式：当一个对象的改变需要同时改变其他对象的时候，而且他不知道具体有多少对象有待改变的时候，这时候应该考虑使用观察
+者模式；观察者模式就是在解除耦合，让耦合的双方依赖于抽象而不是依赖于具体，从而使得各自的变化都不会影响另一边的变化
+3）观察者模式有四个部分：--a.抽象目标：把所有观察者对象的引用保存到一个聚集里，每个主题都可以有任何数量的观察者
+					   --b.具体目标：将有关状态存入具体观察者对象；在具体主题内部发生改变时，给所有登记过的观察者发出通知
+					   --c.抽象观察者：为所有具体观察者定义一个接口，在得到主题通知时更新自己
+					   --d.具体观察者：实现抽象观察者角色所有要求的更新接口，以便使本身的状态与主题的状态协调
+
+3.简单工厂模式
+1）概念：单独一个类用来创建实例
+2）用处：有一个类，他有很多派生类，但是在实例化的时候我们并不清楚当时要实例化的是哪一个派生类，这时候我们就可以采用简单工厂模式，通过父类
+的声明来实例化子类对象，通过switch去实例化；此时我们派生类增加的时候只需要去增加switch里的内容，需要哪里改动就改哪里
+
+++:C#特性
+1）[Tooltip("")]--给公开字段添加界面提示，当界面上鼠标悬停至公开字段时，会给出提示
+2）[System.Serializable]--让当前类的实例能够在界面显示，强制对变量进行序列化
+3）[RequireComponent(typeof(Rigidbody))]--当脚本被挂载时自动添加对应的组件
+4）[Header("Button")]--在unity界面上显示，用于公开拖引用时进行分类
+5）[HideInInspector]--打上这个特性标签的公开字段不会在unity界面显示
+6）[RequireComponent(typeof(Component))]--当这个脚本被挂载在游戏物体上时，需要的组件会自动被添加到游戏物体上，可以有效的避免组装错误；在类的前面使用
+7) [AddComponentMenu]--导航栏菜单，用于编辑器拓展，将自己定义的组件放到自己定义的路径下
+8）[ContextMenu]--右键菜单
+9）[Range]--限定输入值范围
+10）[RuntimeInitializeOnLoadMethod]--该特性下的方法必须为静态方法,在脚本没有挂载时也能执行
+11）[MenuItem]--导航栏的菜单选项，用于编辑器拓展
++： --a.不能直接给菜单选项名，需要给定路径,也就是参数内一定要带"/"
+    --b.给自定义菜单选项添加快捷键(Ctrl--%  Shift--#  Alt--&  LEFT/RIGHT/UP/DOWN--方向键 F1--F1 HOME/END/PGUP/PGDN)，重叠快捷键只有第一个会被调用
+	--c.isValidateFunction这个参数为标签下的静态函数是否是验证函数；当参数为true时，该标签下的函数点击无效但是会有验证效果，同时还需要一个不带这个参数的
+		的函数作为点击函数，参数为false时，该参数无意义
+	--d.权重值，该值越大在菜单选项中显示的越靠后
+	--e.("CONTEXT/Rigidbody/DebugValue") 静态方法必须带Menuommand参数，将command.context转为对应的组件
+12) [CreateAssetMenu(fileName = "UIGroupConfig", menuName = "Config/UI/UIGroupConfig"))]--在Asset中右键创建自定义资源.asset;fileName为文件名，menuName为路劲
+13) [Flags]--可以将枚举作为位域处理，打上Flags标签的枚举，可以进行位运算，位运算以后不再是单纯的数值进行运算
+14）[Conditional("IsCondition")]--这种特性允许我们包括或者取消特定方法的所有调用，为方法声明应用Conditional特性并把编译符作为参数来使用，定义方法的CIL代码本身总是
+会包含在程序集中，只是调用部分的代码会被插入或者忽略（根据宏是否被定义而决定）
+
+++:2D与3D的区别
+1.摄像机--2D里面摄像机为正交模式；3D里面摄像机为透视模式（近大远小）
+2.2D游戏没有z轴变化，3D有
+3.2D没有光源，3D有
+4.做2D游戏需要注意的点（1.分辨率；2.Camera的size）
+5.2D游戏里，中心点的位置就是当前图片所在的位置
+
+++:MVC（model view control）
+1）不是设计模式，也不是框架，是代码的分层思想；model--框架数据层，view--显示层，controller--控制层
+2）代码分层：例如人物属性--a.model单例，数据用Vo类的实例来访问；加上一个Value Object里面存储数据和数据的控制
+					   --b.view组件类，找出所有的UI组件并初始化
+
+++:二进制文件的操作
+1）using关键字的两种使用方法：--a.使用命名空间
+							--b.产生文件流之后出了using的作用域后会自动关闭文件
+2）二进制文件操作步骤：首先创建一个文件流将我们要操作的内容转化为二进制通过文件流传输到一个文本文件里，然后将二进制转化为我们需要的内容
+using (FileStream fs = File.Creat("Text.txt")){
+	using(StreamWrite sw = new SteramWrite(fs)){
+		sw.WriteLine("Hello world");
+	}
+}
+
+++:Lambda表达式
+1）一般用于对一个委托进行赋值操作（C#封装好的委托 Action--不带参数和无返回值 Func--泛型）
+2）当参数有且仅有一个的时候，参数左右两边的括号可以省略
+3）当只有一行执行语句的时候语句块可以省略
+4）当只有一行执行语句，并且有返回值，必须省略return关键字
+
+++:UniRx(Unity Reactive Extensions)
+1）UniRx的介绍：--a.他有事件的概念，只不过他的事件是像水一样流过来，而我们需要做的则是简单的进行组织、变换、过滤、合并
+			   --b.他也用到了回调，只不过事件组织之后，只有简单一个回调就可以进行事件的处理
+			   --c.它的原理和Coroutine非常类似，但是比Coroutine强大得多
+UniRx将时间上的异步事件转为事件序列，通过LINQ操作可以很简单的组合起来，还支持时间操作，擅长处理时间上的异步逻辑
+--学习--
+1）Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ => {do something}).AddTo(this);
+a：延时5秒  b：处理事件  c：绑定到MonoBehaviour生命周期中，当this被Destroy时，该延时逻辑也会被销毁，避免空指针异常
+2）Observable.EveryUpdate().Where(_ => Input.GetMouseButtonUp(0)).First().Subscribe(_ => {do something});
+a：开始一个Update的事件监听  b：每次Update被调用时，进行一个鼠标是否抬起的判断
+c：如果判断通过，则进行基数，并且只获取第一次的点击事件  d：订阅/处理事件
+3）ReactiveProperty：响应式属性，能代替一切变量，当变量的值被设置，就会通知所有的Subscribe的回调函数，支持First、Where等过滤操作
+
+--示例--
+//调用unity生命周期函数
+Observable.EveryUpdate().Subscribe(_ => { Debug.Log("do something"); }).AddTo(this);//AddTo(this)--绑定到Unity生命周期，this也可以是GameObject
+Observable.EveryFixedUpdate().Subscribe(_ => { Debug.Log("do something"); });
+Observable.EveryEndOfFrame().Subscribe(_ => { Debug.Log("do something"); });
+Observable.EveryLateUpdate().Subscribe(_ => { Debug.Log("do something"); });
+Observable.EveryApplicationPause().Subscribe(paused => { Debug.Log("do something"); });
+Observable.EveryApplicationFocus().Subscribe(focused => { Debug.Log("do something"); });
+Observable.OnceApplicationQuit().Subscribe(_ => { Debug.Log("do something"); });
+
+//通过Trigger去绑定生命周期函数
+this.UpdateAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+this.FixedUpdateAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+this.LateUpdateAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+this.OnEnableAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+this.OnDisableAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+this.OnCollisionEnterAsObservable().Subscribe(collision => { Debug.Log("do something"); });
+this.OnCollisionStayAsObservable().Subscribe(collision => { Debug.Log("do something"); });
+this.OnCollisionExitAsObservable().Subscribe(collison => { Debug.Log("do something"); });
+
+//UI组件监听事件
+m_Button.OnClickAsObservable().Subscribe(_ => { Debug.Log("do something"); });
+m_Toggle.OnValueChangedAsObservable().Subscribe(isOn => { Debug.Log("do something"); });
+m_Scrollbar.OnValueChangedAsObservable().Subscribe(scrollValue => { Debug.Log("do something"); });
+m_ScrollRect.OnValueChangedAsObservable().Subscribe(scrollValue => { Debug.Log("do something"); });
+m_Slider.OnValueChangedAsObservable().Subscribe(sliderValue => { Debug.Log("do something"); });
+m_InputField.OnValueChangedAsObservable().Subscribe(inputValue => { Debug.Log("do something"); });
+m_InputField.OnEndEditAsObservable().Subscribe(inputValue => { Debug.Log("do something"); });
+--语法--
+1）Observable.XX().Subscribe();--Observable：可观察的  XX：发布的事件  Subscribe：订阅；订阅可被观察的事件
+2）EveryUpdate：每帧发送一个事件
+3）Where：过滤不满足条件的事件
+4）First：获取第一个满足条件的事件，后面的事件都将被过滤
+）Subscribe：接收EveryUpdate发送的事件
+）AddTo：是一个静态扩展关键字，他对IDisposable进行了扩展，任何实现了IDisposable的接口，都可以使用AddTo,不管是不是UniRx，当GameObject被销毁时，就会调用OnDispose
+		避免造成引用异常等错误，使得UniRx的使用更加安全
+
+++:Git/GitHub
+1.Git命令
+1）git config --global user.name 'shixianming'--初始化用户名
+2）git config --global user.email '634529065@qq.com'--初始化邮箱
+3）ls--查看当前文件
+4）pwd--当前工作目录
+5）mkdir filename--创建一个文件夹
+6）cd filename--进入文件夹
+7）git init--创建本地git仓库
+8）touch a1.php--创建一个文件（a1是文件名，php是文件后缀）
+9）git add a1.php--将文件添加到暂存区
+10）git status--查看本地git仓库状态
+11）git commit -m '描述'--将暂存区的文件添加到本地git仓库
+12）vi a1.php--进入文件编辑模式，a键开始编辑，esc键退出编辑，wq:保存修改
+13）rm -rf a1.php--删除文件
+14）rm -rf/*--删除所有文件
+15）git remote add origin githttps://github.com/shixianming/first.git--添加远程库
+16）git push -u origin master--添加到远程库
+
+
+++:ShaderGraph
+1）创建ShaderGraph的准备工作：在Package Manager中下载Render Pipelines Lighting下载这个包会包含轻量级渲染管线
+和ShaderGraph
+2）在Asset文件下创建LightweightRenderPipelineAsset，打开Edit->Project Setting->Graphics->将创建好的渲染管线拖入
+然后就可以创建PBR Graph
+
+Master
+1.Position--默认情况下，此节点的输入是对象空间位置。此栏位应该输入给顶点的绝对本地位置。某些节点在顶点着色器中不可行
+2.Albedo--材质的albedo值，范围是0~1
+3.Normal--材质的法线值，应该是切线空间的法线
+4.Emission--材质的自发光颜色，应该是正数
+5.Metallic--材质的金属度，0代表无金属度，1代表是金属。只有在workflow为metallic时显示
+6.Smoothness--材质的光泽度，范围是0~1
+7.Occlusion--材质的环境光遮挡值，范围是0~1
+8.Alpha--材质的alpha值，用于透明，也可用于alphaclip，范围是0~1
+9.AlphaClipThreshold--低于这个阈值的部分会被裁掉，范围是0~1
+
+Node
+1.Artistic
+
+2.channel
+
+3.Input
+
+4.Master
+
+5.Math
+1）Multiply;--相加节点
+
+6.procedural
+1）Simple Noise;--噪音（溶解、）
+
+7.Properties
+
+8.Utility
+
+9.Uv
+1.
+1）Fresnel Effect;--边缘光
+
+++:优化项
+1）非托管资源在对象销毁时需要回收，否则会造成内存泄漏
+2）像StringBuilder和Memory这种内部自动扩容的类最好预分配内存，避免自动扩容造成GC
+3）尽量保持游戏对象(UI和场景对象)各自的Z轴最好保持一致，降低DrawCall
+4）协程的各个YieldInstruction最好能缓存以复用，避免重复声明造成GC
+5）字符串的分割函数会造成大量GC，尽量减少使用或者Split(char[] separator, StringSplitOptions options)用这种函数一次分割完以减少GC
+6）如int.ToString()比$"{int}"的消耗更小，后者会有装箱操作
+7）减少UI和TMP上不必要的射线检测和各种设置
+8）StringBuilder的Replace函数不会产生消耗
+9）每创建一个Regex或直接使用其静态方法都会产生大量GC，最好重复使用，其类中的字段每次调用也会产生GC，最好缓存后再使用
+10）频繁变化的UI单独放在一个Canvas下以处理动静分离，因UGUI是将每个Canvas作为一个Mesh去绘制
+11）Mask和RectMask2D的合理使用
+12）申请的内存或加载的资源需要遵循申请和释放的逻辑，否则会导致内存泄漏
+13）ToLua框架下的内存泄漏：lua中引用到的C#变量或创建的一些表等等存在objectsBackMap这个字典中，即使申明的变量加上了local也不会主动释放
+需要手动赋值为nil并调用collectgarbage("collect")这个lua gc函数释放lua内存，清空lua对C#的引用，这样C#那边的内存才能释放
+14）C#避免频繁或大量的临时GC分配，减少数据结构大小从而减少内存占用
+15）Resources.UnloadUnuesdAssets能释放资源占用内存但是不能释放堆内存，并且无论清理多少资源都会有卡顿现象；System.GC.Collect会释放所有能释放的内存，并且没有卡顿现象
+16）Destroy最好是一个GameObject，如果传入GameObject身上的一个脚本那只会Destroy这个脚本，并会Destroy这个GameObject
+17）DrawCall并不是越低越好，因考虑实际情况，一般资料上所说降低DrawCall一是为了消除那些应处理不当导致的额外DrawCall，二是为了是DrawCall达到一个平衡点将CPU和GPU的工作效率提到最高
+18）字符串处理：a--DateTime.Now:00这种格式化的字符串会有装箱和字符串拼接操作改为DateTime.Now.ToString("00")就只有tostring的消耗
+			   b--字符串拼接和格式化时一定要注意是否会有装箱操作，有装箱操作的需要用tostring
+			   c--字符串拼接次数过多时，string内部调用的是可变参数的拼接函数会有字符串数的分配，可用StringBuilder处理，StringBuilder拼接时字符不需要进行ToString操作
+19）可变参数函数的调用会为参数分配一个数组，可自己定义数组然后复用减少这部分消耗或者重载可变参数函数
+
+++:资源的加载与卸载
+1）Instantiate => GameObject => Destroy
+2）AssetBundle.Load, AssetBundle.LoadAll => Object, Audio, Animation, Texture, Material => Resources.UnloadAsset(Object assetToUnload), Resources.UnloadUnuesdAssets, AssetBundle.Unload(true)
+3）WWW.assetBundle, AssetBundle.CreateFromFile, AssetBundle.CreateFromMemory, AssetBundle.CreateFromMemoryImmediate => AssetBundle => AssetBundle.Unload(false), AssetBundle.Unload(true), AssetBundle.UnloadAllAssetBundles
+4）new WWW, AssetBundle.CreateFromMemory => 压缩的assetBundle文件, Decompression, 解压后的资源(Mesh, Texture, Audio, Material, Animation) => AssetBundle和WWW卸载后自动卸载，但是Decompression至少会保留一份
+5）new WWW, WWW.LoadFromCacheOrDownload => WWW => WWW.Dispose() WWW = null
+
+++:Profiler
+注：真机调试(a.勾选Development, Autoconnect Profiler, Deep Profiling Support;b.进入手机开发者模式并开启USB调试;c.打开cmd调试台进入android sdk\platform-tools\adb.exe目录,输入"adb forward tcp:{Profiler中的端口号} localabstract:Unity-{包名}")
+
+++:Unity Android环境配置
+1）Android SDK：新建系统环境变量：ANDROID_HOME，变量值为安装路径 => 在Path环境变量中新建：%ANDROID_HOME%\platform-tools %ANDROID_HOME%\tools
+=> 检查是否配置成功，在cmd窗口输入adb
+2）Android JDK：新建系统环境变量：JAVA_HOME，变量值为安装路径 => 在Path环境变量中新建：%JAVA_HOME%\lib %JAVA_HOME%\B：Input
+=> 检查是否配置成功，在cmd窗口输入java -version
+

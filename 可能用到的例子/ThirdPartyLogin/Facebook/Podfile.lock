@@ -1,0 +1,40 @@
+PODS:
+  - FBSDKCoreKit (9.3.0):
+    - FBSDKCoreKit/Basics (= 9.3.0)
+    - FBSDKCoreKit/Core (= 9.3.0)
+  - FBSDKCoreKit/Basics (9.3.0)
+  - FBSDKCoreKit/Core (9.3.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKGamingServicesKit (9.3.0):
+    - FBSDKCoreKit (~> 9.3.0)
+  - FBSDKLoginKit (9.3.0):
+    - FBSDKLoginKit/Login (= 9.3.0)
+  - FBSDKLoginKit/Login (9.3.0):
+    - FBSDKCoreKit (~> 9.3.0)
+  - FBSDKShareKit (9.3.0):
+    - FBSDKShareKit/Share (= 9.3.0)
+  - FBSDKShareKit/Share (9.3.0):
+    - FBSDKCoreKit (~> 9.3.0)
+
+DEPENDENCIES:
+  - FBSDKCoreKit (~> 9.3)
+  - FBSDKGamingServicesKit (~> 9.3)
+  - FBSDKLoginKit (~> 9.3)
+  - FBSDKShareKit (~> 9.3)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FBSDKCoreKit
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+
+SPEC CHECKSUMS:
+  FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
+  FBSDKGamingServicesKit: bbd8c26490d5822c8fc39493a36d74de559cdc35
+  FBSDKLoginKit: aea68df6121c5e165ccae2fabfdc83c4644ee40f
+  FBSDKShareKit: 70889c97c62f0c6b3ccb8b999e73a85f19024001
+
+PODFILE CHECKSUM: 7a4c5dfe254c15919ef8bcc2ce65e686e75ab2fc
+
+COCOAPODS: 1.10.1
