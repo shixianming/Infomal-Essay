@@ -1,0 +1,259 @@
+1.(lua) print(type(type)) print(type(true)) print(type(nil)) print("10" + 1)
+    print(type(type))：function
+    print(type(true))：boolean
+    print(type(nil))：nil
+    print("10" + 1)：11
+
+2.pairs 和 ipairs的区别
+    a.ipairs遇nil会停止，ipairs会输出nil值然后继续执行
+    b.ipairs不会输出table中存储的键值对，会跳过table中的键值对然后顺序输出table中的值
+      pairs会先顺序输出table中的值，然后乱序（键的哈希值）输出键值对
+    注：table在存储值的时候是按照顺序存储的，但是在存储键值对的时候是按照键的哈希值存储的
+
+3.lua可变参数函数怎么写
+    function Test(...) end
+
+4.线程和进程的区别
+
+5.mipmap的好处和坏处
+    好处：降低显存带宽占用，提高渲染性能，减少远处因为分辨率较大的纹理过分缩小而产生的失真
+是解决纹理分辨率与视点距离关系的最佳选择
+    坏处：内存占用变大，可能会导致远处贴图模糊
+
+6.哈希表的查询时间复杂度，冲突怎么解决
+
+7.冒泡算法的时间复杂度
+    O(n^2)
+
+8.写一个冒泡算法
+    int arrLength = 10
+    int[] arr = new int[arrLength] { 9, 5, 2, 1, 4, 3, 6, 7, 8 , 0}
+    for (int i = 0; i < arrLength; i++)
+    {
+        for (int j = 0; j < arrLength -1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                int temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+            }
+        }
+    }
+
+9.c怎么表示二叉树
+
+10.用递归的方式倒叙输出一个字符串，如“abc”输出“cba”
+    string str = "abcd"
+    void ReversePrint(string str, int index)
+    {
+        if (index < 0 || index >= str.Length)
+        {
+            return;
+        }
+        Console.Write(str[index--]);
+        ReversePrint(str, index)
+    }
+
+11.委托的本质是什么
+	委托的本质：委托的本质是类
+
+12.unity中多线程的应用
+
+
+13.二叉树的遍历
+    c#
+    public class TreeNode<T>
+    {
+        private Node<T> m_Left;
+
+        public Node<T> Left
+        {
+            get
+            {
+                return m_Left;
+            }
+            set{
+                m_Left = value;
+            }
+        }
+
+        private Node<T> m_Right;
+
+        public Node<T> Right
+        {
+            get
+            {
+                return m_Right;
+            }
+            set
+            {
+                m_Right = value;
+            }
+        }
+
+        private T m_Data;
+
+        public T Data
+        {
+            get
+            {
+                return m_Data;
+            }
+            set
+            {
+                m_Data = value;
+            }
+        }
+
+        public Node<T>()
+        {
+            m_Left = null;
+            m_Right = null;
+            m_Data = default;
+        }
+    } 
+
+    先序遍历：根 => 左 => 右
+    void PreorderTraversal(Node<T> node)
+    {
+        if (node == null) 
+        {
+            return;
+        }
+        
+        Console.Write(node.data + " => ");
+        PreorderTraversal(node.Left);
+        PreorderTraversal(node.Right);
+    }
+
+    中序遍历：左 => 根 => 右
+    void InorderTraversal(Node<T> node)
+    {
+        if (node == null)
+        {
+            return;
+        }
+
+        InorderTraversal(node.Left);
+        Console.Write(node.data + " => ");
+        InorderTraversal(node.Right);
+    }
+
+    后序遍历：左 => 右 => 根
+    void PostorderTraversal(Node<T> node)
+    {
+        if (node == null)
+        {
+            return;
+        }
+
+        PostorderTraversal(node.Left);
+        PostorderTraversal(node.Right);
+        Console.Write(node.data + " => ");
+    }
+
+    c
+    树节点声明
+    typedef struct TreeNode
+    {
+        struct Node* left;
+        struct Node* right;
+        char data;
+    }NODE;
+    函数声明
+    NODE* Init();//二叉树初始化
+    void PreorderTraversal(NODE* node);//先序遍历
+    void InorderTraversal(NODE* node);//中序遍历
+    void PostorderTraversal(NODE* node);//后序遍历
+
+    NODE* Init()
+    {
+        NODE* nodeA = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeB = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeC = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeD = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeE = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeF = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeG = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeH = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeI = (NODE*)malloc(sizeof(NODE));
+        NODE* nodeJ = (NODE*)malloc(sizeof(NODE));
+
+        nodeA->data = 'A';
+        nodeA->left = nodeB;
+        nodeA->right = nodeC;
+
+        nodeB->data = 'B';
+        nodeB->left = nodeD;
+        nodeB->right = nodeE;
+
+        nodeC->data = 'C';
+        nodeC->left = nodeF;
+        nodeC->right = nodeG;
+
+        nodeD->data = 'D';
+        nodeD>left = nodeH;
+        nodeD->right = nodeH;
+
+        nodeE->data = 'E';
+        nodeE->left = nodeJ;
+        nodeE->right = NULL;
+
+        nodeF->data = 'F';
+        nodeF->left = NULL;
+        nodeF->right = NULL;
+
+        nodeG->data = 'G';
+        nodeG->left = NULL;
+        nodeG->right = NULL;
+
+        nodeH->data = 'H';
+        nodeH->left = NULL;
+        nodeH->right = NULL;
+
+        nodeI->data = 'I';
+        nodeI->left = NULL;
+        nodeI->right = NULL;
+
+        nodeJ->data = 'J';
+        nodeJ->left = NULL;
+        nodeJ->right = NULL;
+        return nodeA;
+    }
+
+    void PreorderTraversal(NODE* node)
+    {
+        if (NULL == node)
+        {
+            return;
+        }
+
+        printf("%c => ", node.data);
+        PreorderTraversal(node.left);
+        PreorderTraversal(node.right);
+    }
+
+    void InorderTraversal(NODE* node)
+    {
+        if (NULL == node)
+        {
+            return;
+        }
+
+        InorderTraversal(node.left);
+        printf("%c => ", node.data);
+        InorderTraversal(node.right);
+    }
+
+    void PostorderTraversal(NODE* node)
+    {
+        if (NULL == node)
+        {
+            return;
+        }
+
+        PostorderTraversal(node.left);
+        PostorderTraversal(node.right);
+        printf("%c => ", node.data);
+    }

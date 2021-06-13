@@ -1,0 +1,37 @@
+安卓
+1.唤起微信无反应
+	a.检查IWXAPI的创建是否正确，第一个参数传入的是Context需要等到onCreate函数调用以后getActivity才能获取
+	b.检查是否注册APP
+	c.检查appId是否正确
+2.收不到微信的回调
+	a.需要实现IWXAPIEventHandler
+	b.在AndroidManifest.xml中配置 （类名为：WXEntryActivity）
+        <activity
+            android:name="包名.wxapi.WXEntryActivity"
+			android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true" 
+			android:taskAffinity="com.saee.stoneage"
+			android:launchMode="singleTask"/>//activity的类型
+        <meta-data android:name="Mob-AppKey" android:value=""/>
+        <meta-data android:name="Mob-AppSecret" android:value=""/>
+
+iOS
+1.唤起微信提示UniversalLink验证不通过
+	a.检查UniversalLink的配置是否正确，按照开发文档核对（代码中填入微信开放平台对应应用详情里的UniversalLink）
+2.收不到微信的回调
+	a.实现回调方法onResp，onReq
+	b.Unity应用需要在UnityAppController.mm中重写OpenURL方法，注册接受回调的代理
+
+通知栏手势响应延迟
+
+UI/UnityViewControllerBase+ios.mm
+
+-(UIRectEdge) preferredScreenEdgesDefferingSystemGestures
+{
+//上方触摸区域优先自己处理收拾，将系统手势延迟
+	return UIRectEdgeTop;
+
+}
+
