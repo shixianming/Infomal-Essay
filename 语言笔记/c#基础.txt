@@ -158,3 +158,15 @@ C#知识点补充
 15.string与stringBuilder的区别--a：string在声明之后在内存中的大小是不可修改的，而stringBuilder可以自由扩展大小(string分配在栈区，stringBuilder分配在堆区)
 							   b：stringBuilder在指定分配大小之后，性能就会得到提升，在达到指定容量之前，它不会为自己重新分配空间，如果超过了指定大小，其内
 							   存会倍增，也可以通过Capacity来设置其最大容量
+
+Winform打包
+在拓展应用中下载Microsoft Visual studio Installer Project插件 -> 安装后关闭所有打开的项目
+-> 在需要打包的项目中添加一个新项目Setup Project -> 左键选中Setup，然后查看属性 -> 在属性界面中可以修改RroductName等基本信息
+-> 将要打包的debug文件下的内容都Copy到Application Floder文件中(此时该文件就相当于Debug文件夹，Debug文件夹中的文件和文件夹的
+存放位置都要对应到Application Floder文件夹中) -> 右键点击Application Floder -> Add -> Project OutPut -> Ok以后会出现一个程序主输出
+口OutPut，为该主输出口创建一个快捷方式,如果需要在程序安装完成以后在桌面和菜单栏显示快捷方式，那么再创建两个快捷方式并拖入到
+User's Desktop User's Programs Menu 这两个文件夹中 -> 准备卸载程序，依旧是右键Application Floder 文件添加msiexec.exe文件(该文件
+存放再C:\Windows\System32) -> 为卸载程序创建一个快捷方式 -> 左键点击Setup,查看属性 -> 复制ProductCode 中的内容 -> 粘贴到
+创建好的卸载程序快捷方式的属性Arguments中，并在最前面加一个/X -> 如果有framewoek依赖版本或者其他需要脱机完成安装的软件
+可以将依赖包放到安装包中 -> 右键Setup 选择属性 -> 在Prerequistes 中选择需要依赖的文件和下载方式 -> 点击ok -> 左键点击Setup,查看属性
+将平台选择为发布平台相对应的，否则会出错 -> 右键Setup，选择生成
