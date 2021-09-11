@@ -1,36 +1,36 @@
-#region ×Ö·û´®´¦Àí²âÊÔ
+ï»¿#region å­—ç¬¦ä¸²å¤„ç†æµ‹è¯•
 //int a = 1000;
 //char c = 'a';
-//1.×Ö·û´®¸ñÊ½»¯Æ´½ÓÊ±×°Ïä²âÊÔ
-//×°Ïä2.0KB string.format 8.6KB
+//1.å­—ç¬¦ä¸²æ ¼å¼åŒ–æ‹¼æ¥æ—¶è£…ç®±æµ‹è¯•
+//è£…ç®±2.0KB string.format 8.6KB
 //string str1 = $"Hello{a}World";//10.5KB  0.90ms
-//ÎŞ×°Ïä int.tostring 3.3KB string.concact 5.3KB
+//æ— è£…ç®± int.tostring 3.3KB string.concact 5.3KB
 //string str2 = $"Hello{a.ToString()}World";//8.6KB 0.60ms
-//ÎŞ×°Ïä int.tostring 3.3KB string.concact 5.3KB
+//æ— è£…ç®± int.tostring 3.3KB string.concact 5.3KB
 //string str3 = "Hello" + a.ToString() + "World";//8.6KB 0.63ms
 
-//2.×Ö·ûÆ´½ÓÊ±ÊÇ·ñ»á²úÉúToString²âÊÔ
-//×°Ïä3.7KB string.format 11.5KB(int.tostring 3.3KB char.tostring 2.7KB)
+//2.å­—ç¬¦æ‹¼æ¥æ—¶æ˜¯å¦ä¼šäº§ç”ŸToStringæµ‹è¯•
+//è£…ç®±3.7KB string.format 11.5KB(int.tostring 3.3KB char.tostring 2.7KB)
 //string str4 = $"Hello{a}{c}World";//15.2KB 0.98ms
-//ÎŞ×°Ïä int.tostring 3.3KB char.tostring 2.7KB string.concat 5.5KB
+//æ— è£…ç®± int.tostring 3.3KB char.tostring 2.7KB string.concat 5.5KB
 //string str5 = $"Hello{a.ToString()}{c.ToString()}World";//11.5KB 0.76ms
-//ÎŞ×°Ïä int.tostring 3.3KB char.tostring 2.7KB string.concat 5.5KB
+//æ— è£…ç®± int.tostring 3.3KB char.tostring 2.7KB string.concat 5.5KB
 //string str6 = "Hello" + a.ToString() + c + "World";//11.5KB 0.71ms
 
-//3.×Ö·û´®ToStringĞ´·¨²âÊÔ
-//×°Ïä2.3KB string.format 52.2KB
+//3.å­—ç¬¦ä¸²ToStringå†™æ³•æµ‹è¯•
+//è£…ç®±2.3KB string.format 52.2KB
 //string str7 = $"{DateTime.Now}";//54.5KB 9.38ms
-//×°Ïä2.3KB string.format 37.7KB 
+//è£…ç®±2.3KB string.format 37.7KB 
 //string str8 = $"{DateTime.Now:00}";//40.0KB 6.14ms
-//ÎŞ×°Ïä datetime.tostring 10.0KB
+//æ— è£…ç®± datetime.tostring 10.0KB
 //string str9 = DateTime.Now.ToString("00");//10.0KB 5.53ms
 
-//4.×Ö·û´®Æ´½ÓºÍStringBuilder²âÊÔ
-//×°Ïä 5.7KB string.format 15.6KB
+//4.å­—ç¬¦ä¸²æ‹¼æ¥å’ŒStringBuilderæµ‹è¯•
+//è£…ç®± 5.7KB string.format 15.6KB
 //string str10 = $"Hello{a}{c}{a}World";//21.3KB 1.48ms
-//gc 7.0KB int.tostring 6.6KB char.tostring 2.7KB string.concat 13.3KB(²ÎÊı¸öÊı¹ı¶à£¬µ÷ÓÃµÄÊÇstring.concat(params String[] Values))»áÓĞ×Ö·û´®Êı×éµÄgc·ÖÅä
+//gc 7.0KB int.tostring 6.6KB char.tostring 2.7KB string.concat 13.3KB(å‚æ•°ä¸ªæ•°è¿‡å¤šï¼Œè°ƒç”¨çš„æ˜¯string.concat(params String[] Values))ä¼šæœ‰å­—ç¬¦ä¸²æ•°ç»„çš„gcåˆ†é…
 //string str11 = "Hello" + a.ToString() + c.ToString() + a.ToString() + "World";//29.7KB;
-//StringBuilder builder = new StringBuilder(20);//¿É¸´ÓÃStringBuilder¼õÉÙStringBuilder¹¹ÔìÏûºÄ
+//StringBuilder builder = new StringBuilder(20);//å¯å¤ç”¨StringBuilderå‡å°‘StringBuilderæ„é€ æ¶ˆè€—
 //var astr = a.ToString();
 //builder.Append("Hello");
 //builder.Append(astr);

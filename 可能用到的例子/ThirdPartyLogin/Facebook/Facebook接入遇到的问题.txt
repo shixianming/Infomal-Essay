@@ -45,6 +45,7 @@ Android
 如果应用处于开发模式那么打包时也需要使用Android环境默认的密钥（debug.keystore）一般存放在C:\Users\用户名\.android\debug.keystore，并把开发密钥的散列值配置到后台
 如果应用处于发布模式那么需要把打包时的密钥（发布一般使用自定义密钥）的散列值配置到Facebook的后台
 3.FacebookSettings配置文件中获取的开发密钥散列值是有延迟或者不准确的，最好自己用命令去获取正确的散列值
+4.Facebook打安卓包慢是因为在下载maven-metadata.xml文件（依赖包的版本对比文件），可更改下载地址为阿里云仓库地址提高下载速度https://developer.aliyun.com/mvn/guide
 
 iOS
 1.本地没有安装cocoapods首次打包会自动安装
