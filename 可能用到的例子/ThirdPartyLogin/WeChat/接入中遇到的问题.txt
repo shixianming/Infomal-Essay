@@ -12,7 +12,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true" 
-			android:taskAffinity="com.saee.stoneage"
+			android:taskAffinity="包名"
 			android:launchMode="singleTask"/>//activity的类型
         <meta-data android:name="Mob-AppKey" android:value=""/>
         <meta-data android:name="Mob-AppSecret" android:value=""/>
